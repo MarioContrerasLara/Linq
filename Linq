@@ -1,0 +1,98 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
+
+namespace Linq
+{
+    internal class Program
+    {
+        public class Patient
+        {
+            public int id { get; set; }
+            public string name { get; set; }
+            public string lastname { get; set; }
+            public string sex { get; set; }
+            public float temperature { get; set; }
+            public int heartRate { get; set; }
+            public string specialty { get; set; }
+            public int age { get; set; }
+        }
+        static void Main(string[] args)
+        {
+            var Patients = new List<Patient>
+            {
+                new Patient { id = 1, name = "John", lastname = "Doe", sex = "Male", temperature = 36.8F, heartRate = 80, specialty = "general medicine", age = 44},
+                new Patient { id = 2, name = "Jane", lastname = "Doe", sex = "Female", temperature = 36.8F, heartRate = 70, specialty = "general medicine", age = 43},
+                new Patient { id = 3, name = "Junior", lastname = "Doe", sex = "Female", temperature = 36.8F, heartRate = 90, specialty = "pediatrics", age = 8},
+                new Patient { id = 4, name = "Mary", lastname = "Wien", sex = "Female", temperature = 36.8F, heartRate = 90, specialty = "general medicine", age = 20},
+                new Patient { id = 5, name = "Scarlett", lastname = "Somez", sex = "Female", temperature = 36.8F, heartRate = 110, specialty = "general medicine", age = 30},
+                new Patient { id = 6, name = "Brian", lastname = "Kid", sex = "Male", temperature = 39.8F, heartRate = 80, specialty = "pediatrics", age = 11}
+            };
+
+            Console.WriteLine("Uno.");
+            //1 - Extraer la lista de pacientes que sean de la especialidad pediatrics y que tengan menos de 10 años.
+            var uno = Patients.Where(Patient => Patient.specialty == "pedriatics" && Patient.age < 10);
+
+            foreach (var Patient in uno)
+            {
+                Console.WriteLine(Patient.name);
+            }
+            Console.WriteLine();
+
+            Console.WriteLine("Dos.");
+            //2 - Queremos activar el protocolo de urgencia si hay algún paciente con ritmo cardíaco mayor que 100 o temperatura mayor a 39.
+            var dos = Patients.Where(Patient => Patient.heartRate > 100 ^ Patient.temperature > 39);
+
+            foreach (var Patient in dos)
+            {
+                Console.WriteLine($"{Patient.name}");
+            }
+            Console.WriteLine();
+
+            Console.WriteLine("Tres.");
+            //3 - No podemos atender a todos los pacientes hoy por lo que vamos a crear una nueva coleccion y reasignar a los pacientes de pediatrics a general medicine
+            var tres = Patients.Where(Patient => Patient.specialty == "pediatrics");
+
+            foreach (var Patient in tres)
+            {
+                Patient.specialty = "general medicine";
+            }
+            Console.WriteLine();
+
+            Console.WriteLine("Cuatro");
+            //4- Queremos conocer de una sola consulta el numero de pacientes que estan asignado a general medicine y a pediatrics.
+            var cuatro = Patients.Count(Patient => Patient.specialty == "pediatrics" ^ Patient.specialty == "general medicine");            
+            Console.WriteLine($"{cuatro}");
+            Console.WriteLine();
+
+            Console.WriteLine("Cinco.");
+            //5 - Devuelve una lista nueva que por cada paciente se indique s
+            //tiene prioridad o no. Se tendrá prioridad si el ritmo cardiaco es mayor 100 o la temperatura es mayor a 39.
+
+            var cinco = Patients.Where(Patient => Patient.heartRate > 100 ^ Patient.temperature > 39);
+
+            foreach(var Patient in Patients) {
+                if(Patient.heartRate > 100 ^ Patient.temperature > 39)
+                {
+                    Console.WriteLine($"{Patient.name} tiene prioridad");
+                }
+                else
+                {
+                    Console.WriteLine($"{Patient.name} no tiene prioridad");
+                }                
+            }
+            Console.WriteLine();
+
+            Console.WriteLine("Seis.");
+            //6 - Queremos conocer de una sola consulta La edad media de pacientes asignados
+            //a pediatrics y general medicine.
+            //var seis = Patients.Where(Patient => Patient.specialty == "pediatrics" ^ Patient.specialty == "general medicine");
+            //var seiss = seis.Average(Patient => Patient.age);
+
+            var seis = Patients.Where(Patient => Patient.specialty == "pediatrics" ^ Patient.specialty == "general medicine").Average(Patient => Patient.age);
+            Console.WriteLine($"{seis}");
+
+        }
+    }
+}
